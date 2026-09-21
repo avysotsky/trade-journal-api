@@ -35,6 +35,18 @@ docker compose up --build
 
 Development defaults in `docker-compose.yml` are intentionally non-secret. For your own values, copy `.env.example` to `.env`; `.env` is ignored by Git.
 
+### Existing Windows PostgreSQL 16
+
+Alex's local development setup uses an isolated training cluster from the installed PostgreSQL 16 binaries:
+
+- data: `D:\PostgreSQL\trade-journal-data`;
+- host: `127.0.0.1`;
+- port: `54322`;
+- database/user: `trade_journal`;
+- local-only trust authentication; never expose this port outside the computer.
+
+The default `appsettings.json` connection string targets this local cluster. Docker Compose overrides it inside the API container.
+
 ## First requests
 
 ```bash

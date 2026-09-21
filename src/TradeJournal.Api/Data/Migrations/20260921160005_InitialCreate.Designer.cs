@@ -13,7 +13,7 @@ using TradeJournal.Api.Models;
 namespace TradeJournal.Api.Data.Migrations
 {
     [DbContext(typeof(TradeJournalDbContext))]
-    [Migration("20260921154531_InitialCreate")]
+    [Migration("20260921160005_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace TradeJournal.Api.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.4")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "trade_side", new[] { "buy", "sell" });

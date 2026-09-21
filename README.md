@@ -4,7 +4,7 @@ A private-first pet project for practicing C#/.NET backend development and Postg
 
 ## Stack
 
-- .NET 10 / ASP.NET Core Web API
+- .NET 8 / ASP.NET Core Web API
 - PostgreSQL 17
 - Entity Framework Core + Npgsql migrations
 - Docker Compose
@@ -29,7 +29,8 @@ docker compose up --build
 ```
 
 - API: `http://localhost:8080`
-- OpenAPI: `http://localhost:8080/openapi/v1.json`
+- Swagger UI: `http://localhost:8080/swagger`
+- OpenAPI: `http://localhost:8080/swagger/v1/swagger.json`
 - PostgreSQL: `localhost:5432`
 
 Development defaults in `docker-compose.yml` are intentionally non-secret. For your own values, copy `.env.example` to `.env`; `.env` is ignored by Git.

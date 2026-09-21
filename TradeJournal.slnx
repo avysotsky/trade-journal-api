@@ -1,8 +1,0 @@
-<Solution>
-  <Folder Name="/src/">
-    <Project Path="src/TradeJournal.Api/TradeJournal.Api.csproj" />
-  </Folder>
-  <Folder Name="/tests/">
-    <Project Path="tests/TradeJournal.UnitTests/TradeJournal.UnitTests.csproj" />
-  </Folder>
-</Solution>

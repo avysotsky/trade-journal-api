@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using TradeJournal.Api.Data;
 using TradeJournal.Api.Models;
 
@@ -8,18 +9,20 @@ var connectionString = builder.Configuration.GetConnectionString("Postgres")
 
 builder.Services.AddProblemDetails();
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
-builder.Services.AddDbContext<TradeJournalDbContext>(options =>
-    options.UseNpgsql(connectionString, npgsql =>
-    {
-        npgsql.MapEnum<TradeSide>("trade_side");
-        npgsql.MapEnum<TradeStatus>("trade_status");
-    }));
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
+dataSourceBuilder.MapEnum<TradeSide>("trade_side");
+dataSourceBuilder.MapEnum<TradeStatus>("trade_status");
+var dataSource = dataSourceBuilder.Build();
+builder.Services.AddSingleton(dataSource);
+builder.Services.AddDbContext<TradeJournalDbContext>(options => options.UseNpgsql(dataSource));
 
 var app = builder.Build();
 
 app.UseExceptionHandler();
-app.MapOpenApi();
+app.UseSwagger();
+app.UseSwaggerUI();
 app.MapControllers();
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 app.MapGet("/health/database", async (TradeJournalDbContext db, CancellationToken cancellationToken) =>

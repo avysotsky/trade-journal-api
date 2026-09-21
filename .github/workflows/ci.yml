@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-test-migrate:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: trade_journal_test
+          POSTGRES_USER: trade_journal
+          POSTGRES_PASSWORD: trade_journal_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U trade_journal -d trade_journal_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      ConnectionStrings__Postgres: Host=localhost;Port=5432;Database=trade_journal_test;Username=trade_journal;Password=trade_journal_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - run: dotnet restore
+      - run: dotnet build --configuration Release --no-restore
+      - run: dotnet test --configuration Release --no-build
+      - run: dotnet tool restore
+      - run: dotnet ef database update --project src/TradeJournal.Api --startup-project src/TradeJournal.Api

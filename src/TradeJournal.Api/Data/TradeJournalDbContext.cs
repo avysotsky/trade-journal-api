@@ -8,6 +8,7 @@ public sealed class TradeJournalDbContext(DbContextOptions<TradeJournalDbContext
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<Trade> Trades => Set<Trade>();
     public DbSet<Tag> Tags => Set<Tag>();
+    public DbSet<Strategy> Strategies => Set<Strategy>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -57,5 +58,27 @@ public sealed class TradeJournalDbContext(DbContextOptions<TradeJournalDbContext
                 .WithMany(x => x.Tags)
                 .UsingEntity("trade_tags");
         });
+
+        modelBuilder.Entity<Strategy>(entity =>
+        {
+            entity.ToTable("strategies");
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Name)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            entity.Property(x => x.Description)
+                .HasMaxLength(1000);
+
+            entity.Property(x => x.IsActive)
+                .HasDefaultValue(true);
+
+            entity.Property(x => x.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.HasIndex(x => x.Name)
+                .IsUnique();
+        });
+
     }
 }
